@@ -71,7 +71,7 @@
 								<td>
 									<span t-esc="unit_index + 1" />
 									/
-									<span t-esc="int(line.product_uos_qty)"/>
+									<span t-field="line.product_uos_qty"/>
 								</td>
 							</tr>
 							<tr>
