@@ -1,6 +1,6 @@
 {
     'name': "Deliveries labels printing",
-    'version': '1.0',
+    'version': '1.1',
     'depends': ['sale', 'report'],
     'author': "Valentin THIRION, AbAKUS it-solutions SARL",
     'website': "http://www.abakusitsolutions.eu",
@@ -8,14 +8,13 @@
     'description': """
     Print labels for deliveries.
 
-	This modules also creates a paperreport adapted for AbAKUS labels.
-	To use it, you have to set it for the given report (settings/reports/=>Labels set paperformat as "AbAkus Labels ...").
+This modules also creates a paperreport adapted for AbAKUS labels.
+To use it, you have to set it for the given report (settings/reports/=>Labels set paperformat as "AbAkus Labels ...").
+
+We added a button in the sale order form to directly print the labels.	
     """,
     'data': [
         'reports.xml',
 		'data.xml',
-    ],
-    'demo': [
-      'demo.xml',
     ],
 }
