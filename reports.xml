@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
-		<record id="sale_order_report" model="ir.ui.view">
+		<!-- SO REPORT -->
+		<record id="sale_order_report_labels" model="ir.ui.view">
 			<field name="name">sale_order_report</field>
        			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
@@ -11,17 +12,24 @@
 				</xpath>
 			</field>
 		</record>
-
 		<report 
-			id="report_deliveries_labels"
-			string="Delivery labels"
+			id="sale_report_deliveries_labels"
+			string="Sales delivery labels"
 			model="sale.order" 
 			report_type="qweb-pdf"
-			file="stock.report_deliverieslabels" 
-			name="stock.report_deliverieslabels"
+			file="sale.report_deliverieslabels" 
+			name="sale.report_deliverieslabels"
 		/>
 
-		<template id="stock.report_deliverieslabels_document">
+		<template id="sale.report_deliverieslabels">
+		    <t t-call="report.html_container">
+		        <t t-foreach="doc_ids" t-as="doc_id">
+		            <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'sale.report_deliverieslabels_document')"/>
+		        </t>
+		    </t>
+		</template>
+
+		<template id="sale.report_deliverieslabels_document">
 			<!-- paperformat_id="stock_deliveries_labels_paperformat" -->			
 			<!-- Multicompany -->
 			<t t-if="o and 'company_id' in o">
@@ -43,14 +51,13 @@
 								</td>
 							</tr>
 
-							<!-- Order # - date - Line # -->
+							<!-- Order # - date -->
 							<tr>
 								<td style="font-size: 14pt;">
 									<strong><span t-field="o.name"/></strong>
 								</td>
 								<td style="font-size: 14pt;">
 									<span t-field="o.date_order" t-field-options="{&quot;format&quot;: &quot;dd.M.YYYY&quot;}"/>
-									<!-- Line n° : -->
 								</td>
 							</tr>
 					
@@ -112,12 +119,122 @@
 		    <!--</t>-->
 		</template>
 
+		<!-- STOCK PICKING REPORT -->
+		<record id="stock_order_report_labels" model="ir.ui.view">
+			<field name="name">stock.deliveries_report</field>
+       			<field name="model">stock.picking</field>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="(//button[@string='Unreserve'])[1]" position="after">
+					 <button name="print_labels" type="object" string="Print labels"/>
+				</xpath>
+			</field>
+		</record>
+		<report 
+			id="stock_report_deliveries_labels"
+			string="Picking Delivery labels"
+			model="stock.picking" 
+			report_type="qweb-pdf"
+			file="stock.report_deliverieslabels" 
+			name="stock.report_deliverieslabels"
+		/>
+
 		<template id="stock.report_deliverieslabels">
 		    <t t-call="report.html_container">
 		        <t t-foreach="doc_ids" t-as="doc_id">
 		            <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'stock.report_deliverieslabels_document')"/>
 		        </t>
 		    </t>
+		</template>
+
+		<template id="stock.report_deliverieslabels_document">
+			<!-- paperformat_id="stock_deliveries_labels_paperformat" -->			
+			<!-- Multicompany -->
+			<t t-if="o and 'company_id' in o">
+				<t t-set="company" t-value="o.company_id"/>
+			</t>
+			<t t-if="not o or not 'company_id' in o">
+				<t t-set="company" t-value="res_company"/>
+			</t>
+
+			<div t-foreach="o.move_lines" t-as="line">
+				<div class="page" t-foreach="int(round(line.product_uos_qty))" t-as="unit">
+					<div class="oe_structure"/>
+					<div class="row">
+						<table style="width: 100%; text-align: center;">
+							<!-- Company name -->
+							<tr>
+								<td colspan="2" style="border-bottom: 1px black solid;">
+									<span t-field="company.partner_id.name" /> / <span t-field="company.partner_id.street" /> <span t-field="company.partner_id.zip" /> <span t-field="company.partner_id.city" /> / <span t-field="company.partner_id.phone" />
+								</td>
+							</tr>
+
+							<!-- Order # - date -->
+							<tr>
+								<td style="font-size: 14pt;">
+									<strong><span t-field="o.name"/></strong>
+								</td>
+								<td style="font-size: 14pt;">
+									<span t-field="o.date" t-field-options="{&quot;format&quot;: &quot;dd.M.YYYY&quot;}"/>
+								</td>
+							</tr>
+					
+							<!-- Customer -->
+							<tr>
+								<td colspan="2" style="border: 1px black solid; margin-top: 10px; margin-bottom: 10px; padding: 5px; font-size: 15pt;">
+									<b><span t-field="o.partner_id" /></b>
+								</td>
+							</tr>
+
+							<!-- Customer address -->
+							<tr>
+								<td colspan="2">
+									<span t-field="o.partner_id.street"/>
+									<span t-field="o.partner_id.zip"/> <span t-field="o.partner_id.city"/>
+								</td>
+							</tr>
+
+							<!-- Product - QoU - barcode - SKU -->
+							<tr>
+								<td colspan="2" style="border: 1px solid black; margin-top: 10px; margin-bottom: 10px; padding: 5px; font-size: 13pt">
+									<b><span t-field="line.product_id.name"/></b>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Quantity:
+								</td>
+								<td>
+									<span t-esc="unit_index + 1" />
+									/
+									<span t-esc="int(line.product_uos_qty)"/>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<span t-if="line.product_id.ean13">
+										<img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', line.product_id.ean13, 600, 100)" style="margin-top: 5px; width:270px; height:50px"/>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<span t-field="line.product_id.default_code"/>
+								</td>
+							</tr>
+
+							<!-- END -->
+							<tr>
+								<td colspan="2">
+									<img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="margin-top: 2px; height: 50px;"/>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			    <div class="oe_structure"/>
+			</div>
+		    <!--</t>-->
 		</template>
 	</data>
 </openerp>
