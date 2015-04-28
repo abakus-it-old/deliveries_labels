@@ -84,10 +84,10 @@
 
 		<template id="report_deliverieslabels_stock_document">
             <t t-name="deliveries_labels.report_deliverieslabels_stock_document">
-                <t t-if="o.picking_id and 'company_id' in o.picking_id">
-                    <t t-set="company" t-value="o.picking_id.company_id"/>
+                <t t-if="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id"/>
                 </t>
-                <t t-if="not o.picking_id or not 'company_id' in o.picking_id">
+                <t t-if="not o or not 'company_id' in o">
                     <t t-set="company" t-value="res_company"/>
                 </t>
 
@@ -124,13 +124,13 @@
 
 		<template id="report_deliverieslabels_stock_pack_operation_document">
             <t t-name="deliveries_labels.report_deliverieslabels_stock_pack_operation_document">
-                <t t-if="o and 'company_id' in o">
-                    <t t-set="company" t-value="o.company_id"/>
+                <t t-if="o.picking_id and 'company_id' in o.picking_id">
+                    <t t-set="company" t-value="o.picking_id.company_id"/>
                 </t>
-                <t t-if="not o or not 'company_id' in o">
+                <t t-if="not o.picking_id or not 'company_id' in o.picking_id">
                     <t t-set="company" t-value="res_company"/>
                 </t>
-                
+                                
                 <t t-set="product_uos_qty" t-value="o.product_qty"/>
                 <t t-set="company" t-value="company"/>
                 <t t-set="label_name" t-value="o.picking_id.name"/>
