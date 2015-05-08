@@ -182,7 +182,7 @@
 
 							<tr>
 								<td colspan="2" style="border: 1px black solid; margin-top: 10px; margin-bottom: 10px; padding: 5px; font-size: 15pt;">
-									<b><span t-esc="customer.name" /></b>
+									<b><t t-if="customer.parent_id"><span t-esc="customer.parent_id.name"/>: </t><span t-esc="customer.name" /></b>
 								</td>
 							</tr>
 
