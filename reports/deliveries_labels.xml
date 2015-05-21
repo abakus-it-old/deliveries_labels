@@ -142,6 +142,47 @@
 		    </t>
 		</template>
         
+        
+        
+        <!-- STOCK MOVE TRANSIENT REPORT -->   
+		<report 
+			id="stock_move_transient_report_deliveries_labels"
+			string="Stock move transient labels"
+			model="stock.move.transient" 
+			report_type="qweb-pdf"
+			file="deliveries_labels.report_deliverieslabels_stock_move_transient" 
+			name="deliveries_labels.report_deliverieslabels_stock_move_transient"
+		/>
+
+		<template id="report_deliverieslabels_stock_move_transient">
+		    <t t-call="report.html_container">
+		        <t t-foreach="doc_ids" t-as="doc_id">
+		            <t t-raw="translate_doc(doc_id, doc_model, 'picking_id.partner_id.lang', 'deliveries_labels.report_deliverieslabels_stock_move_transient_document')"/>
+		        </t>
+		    </t>
+		</template>
+
+		<template id="report_deliverieslabels_stock_move_transient_document">
+            <t t-name="deliveries_labels.report_deliverieslabels_stock_move_transient_document">
+                <t t-if="o.picking_id and 'company_id' in o.picking_id">
+                    <t t-set="company" t-value="o.picking_id.company_id"/>
+                </t>
+                <t t-if="not o.picking_id or not 'company_id' in o.picking_id">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+                
+                <t t-set="product_uos_qty" t-value="o.product_qty"/>
+                <t t-set="company" t-value="company"/>
+                <t t-set="label_name" t-value="o.picking_id.name"/>
+                <t t-set="label_date" t-value="o.date"/>
+                <t t-set="customer" t-value="o.picking_id.partner_id"/>
+                <t t-set="customer_address" t-value="o.picking_id.partner_id"/>
+                <t t-set="product" t-value="o.product_id"/>
+                <t t-call="deliveries_labels.report_delivery_label_document"/>
+		    </t>
+		</template>
+        
+
         <!-- Deliveries labels report for 1 line -->
         <template id="report_delivery_label_document">
             <t t-name="deliveries_labels.report_delivery_label_document">

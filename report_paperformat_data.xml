@@ -25,5 +25,9 @@
         <record id="deliveries_labels.stock_pack_operation_report_deliveries_labels" model="ir.actions.report.xml">
             <field name="paperformat_id" ref="stock_deliveries_labels_paperformat"/>
         </record>
+        
+        <record id="deliveries_labels.stock_move_transient_report_deliveries_labels" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="stock_deliveries_labels_paperformat"/>
+        </record>
 	</data>
 </openerp>
