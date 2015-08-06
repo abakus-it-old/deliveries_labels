@@ -6,6 +6,7 @@
 			<field name="name">sale_order_report</field>
        			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
 			<field name="arch" type="xml">
 				<xpath expr="(//button[@string='Print'])[1]" position="after">
 					 <button name="print_labels" type="object" string="Print labels"/>
@@ -58,6 +59,7 @@
 			<field name="name">stock.deliveries_report</field>
        			<field name="model">stock.picking</field>
 			<field name="inherit_id" ref="stock.view_picking_form"/>
+			<field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
 			<field name="arch" type="xml">
 				<xpath expr="(//button[@string='Unreserve'])[1]" position="after">
 					 <button name="print_labels" type="object" string="Print labels"/>
