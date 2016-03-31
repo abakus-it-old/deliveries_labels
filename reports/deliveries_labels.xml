@@ -4,17 +4,17 @@
 		<!-- SO REPORT -->
 		<record id="sale_order_report_labels" model="ir.ui.view">
 			<field name="name">sale_order_report</field>
-       			<field name="model">sale.order</field>
+			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
 			<field name="arch" type="xml">
 				<xpath expr="(//button[@name='print_quotation'])[1]" position="after">
-					 <button name="print_labels" type="object" string="Print labels"/>
+					<button name="print_labels" type="object" string="Print labels"/>
 				</xpath>
 			</field>
 		</record>
-		
-        <report 
+
+		<report
 			id="sale_report_deliveries_labels"
 			string="Sales delivery labels"
 			model="sale.order" 
@@ -24,23 +24,22 @@
 		/>
 
 		<template id="report_deliverieslabels_sale">
-		    <t t-call="report.html_container">
-		        <t t-foreach="doc_ids" t-as="doc_id">
-		            <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'deliveries_labels.report_deliverieslabels_sale_document')"/>
-		        </t>
-		    </t>
+			<t t-call="report.html_container">
+				<t t-foreach="doc_ids" t-as="doc_id">
+					<t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'deliveries_labels.report_deliverieslabels_sale_document')"/>
+				</t>
+			</t>
 		</template>
 
 		<template id="report_deliverieslabels_sale_document">
-            <t t-name="deliveries_labels.report_deliverieslabels_sale_document">
-                <!-- Multicompany -->
-                <t t-if="o and 'company_id' in o">
-                    <t t-set="company" t-value="o.company_id"/>
+			<t t-name="deliveries_labels.report_deliverieslabels_sale_document">
+				<!-- Multicompany -->
+				<t t-if="o and 'company_id' in o">
+					<t t-set="company" t-value="o.company_id"/>
+				</t>
+				<t t-if="not o or not 'company_id' in o">
+					<t t-set="company" t-value="res_company"/>
                 </t>
-                <t t-if="not o or not 'company_id' in o">
-                    <t t-set="company" t-value="res_company"/>
-                </t>
-
                 <div t-foreach="o.order_line" t-as="line">
                     <t t-set="product_uos_qty" t-value="line.product_uos_qty"/>
                     <t t-set="company" t-value="company"/>
@@ -55,20 +54,20 @@
 		</template>
 
 		<!-- STOCK PICKING REPORT -->
-		<record id="stock_picking_report_labels" model="ir.ui.view">
-			<field name="name">stock.deliveries_report</field>
-       			<field name="model">stock.picking</field>
-			<field name="inherit_id" ref="stock.view_picking_form"/>
-			<field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
-			<field name="arch" type="xml">
-				<xpath expr="(//button[@name='do_print_picking'])[1]" position="after">
-					 <button name="print_labels" type="object" string="Print labels"/>
-				</xpath>
-			</field>
-		</record>
+        <record id="stock_picking_report_labels" model="ir.ui.view">
+            <field name="name">stock.deliveries_report</field>
+                <field name="model">stock.picking</field>
+                <field name="inherit_id" ref="stock.view_picking_form"/>
+                <field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
+                <field name="arch" type="xml">
+                    <xpath expr="(//button[@name='do_print_picking'])[1]" position="after">
+                        <button name="print_labels" type="object" string="Print labels"/>
+                    </xpath>
+                </field>
+        </record>
         
-		<report 
-			id="stock_report_deliveries_labels"
+        <report 
+            id="stock_report_deliveries_labels"
 			string="Picking Delivery labels"
 			model="stock.picking" 
 			report_type="qweb-pdf"
@@ -77,12 +76,12 @@
 		/>
 
 		<template id="report_deliverieslabels_stock">
-		    <t t-call="report.html_container">
-		        <t t-foreach="doc_ids" t-as="doc_id">
-		            <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'deliveries_labels.report_deliverieslabels_stock_document')"/>
-		        </t>
-		    </t>
-		</template>
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'deliveries_labels.report_deliverieslabels_stock_document')"/>
+                </t>
+            </t>
+        </template>
 
 		<template id="report_deliverieslabels_stock_document">
             <t t-name="deliveries_labels.report_deliverieslabels_stock_document">
@@ -116,13 +115,13 @@
 			name="deliveries_labels.report_deliverieslabels_stock_pack_operation"
 		/>
 
-		<template id="report_deliverieslabels_stock_pack_operation">
-		    <t t-call="report.html_container">
-		        <t t-foreach="doc_ids" t-as="doc_id">
-		            <t t-raw="translate_doc(doc_id, doc_model, 'picking_id.partner_id.lang', 'deliveries_labels.report_deliverieslabels_stock_pack_operation_document')"/>
-		        </t>
-		    </t>
-		</template>
+        <template id="report_deliverieslabels_stock_pack_operation">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'picking_id.partner_id.lang', 'deliveries_labels.report_deliverieslabels_stock_pack_operation_document')"/>
+                </t>
+            </t>
+        </template>
 
 		<template id="report_deliverieslabels_stock_pack_operation_document">
             <t t-name="deliveries_labels.report_deliverieslabels_stock_pack_operation_document">
@@ -157,12 +156,12 @@
 		/>
 
 		<template id="report_deliverieslabels_stock_move_transient">
-		    <t t-call="report.html_container">
-		        <t t-foreach="doc_ids" t-as="doc_id">
-		            <t t-raw="translate_doc(doc_id, doc_model, 'picking_id.partner_id.lang', 'deliveries_labels.report_deliverieslabels_stock_move_transient_document')"/>
-		        </t>
-		    </t>
-		</template>
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'picking_id.partner_id.lang', 'deliveries_labels.report_deliverieslabels_stock_move_transient_document')"/>
+                </t>
+            </t>
+        </template>
 
 		<template id="report_deliverieslabels_stock_move_transient_document">
             <t t-name="deliveries_labels.report_deliverieslabels_stock_move_transient_document">
@@ -197,7 +196,6 @@
                 customer_address    #res.partner
                 product             #product.template
                 -->
-
 				<div class="page" t-foreach="int(round(product_uos_qty))" t-as="unit">
 					<div class="oe_structure"/>
 					<div class="row">
@@ -220,15 +218,13 @@
 									<span t-esc="time.strftime('%d.%m.%Y',time.strptime(label_date,'%Y-%m-%d %H:%M:%S'))"/>
 								</td>
 							</tr>
-					
+				
 							<!-- Customer -->
-
 							<tr>
 								<td colspan="2" style="border: 1px black solid; margin-top: 10px; margin-bottom: 10px; padding: 5px; font-size: 15pt;">
 									<b><t t-if="customer.parent_id"><span t-esc="customer.parent_id.name"/>: </t><span t-esc="customer.name" /></b>
 								</td>
 							</tr>
-
 							<!-- Customer address -->
 							<tr>
 								<td colspan="2">
