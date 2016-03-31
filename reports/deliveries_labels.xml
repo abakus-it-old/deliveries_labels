@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
-		<!-- SO REPORT -->
-		<record id="sale_order_report_labels" model="ir.ui.view">
-			<field name="name">sale_order_report</field>
-			<field name="model">sale.order</field>
-			<field name="inherit_id" ref="sale.view_order_form"/>
-			<field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
-			<field name="arch" type="xml">
-				<xpath expr="(//button[@name='print_quotation'])[1]" position="after">
-					<button name="print_labels" type="object" string="Print labels"/>
-				</xpath>
-			</field>
-		</record>
+    <data>
+    <!-- SO REPORT -->
+        <record id="sale_order_report_labels" model="ir.ui.view">
+            <field name="name">sale_order_report</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="(//button[@name='print_quotation'])[1]" position="after">
+                    <button name="print_labels" type="object" string="Print labels"/>
+                </xpath>
+            </field>
+        </record>
 
-		<report
-			id="sale_report_deliveries_labels"
-			string="Sales delivery labels"
-			model="sale.order" 
-			report_type="qweb-pdf"
-			file="deliveries_labels.report_deliverieslabels_sale" 
-			name="deliveries_labels.report_deliverieslabels_sale"
-		/>
+        <report
+            id="sale_report_deliveries_labels"
+            string="Sales delivery labels"
+            model="sale.order" 
+            report_type="qweb-pdf"
+            file="deliveries_labels.report_deliverieslabels_sale" 
+            name="deliveries_labels.report_deliverieslabels_sale"
+        />
 
-		<template id="report_deliverieslabels_sale">
-			<t t-call="report.html_container">
-				<t t-foreach="doc_ids" t-as="doc_id">
-					<t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'deliveries_labels.report_deliverieslabels_sale_document')"/>
-				</t>
-			</t>
-		</template>
+        <template id="report_deliverieslabels_sale">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'deliveries_labels.report_deliverieslabels_sale_document')"/>
+                </t>
+            </t>
+        </template>
 
-		<template id="report_deliverieslabels_sale_document">
-			<t t-name="deliveries_labels.report_deliverieslabels_sale_document">
-				<!-- Multicompany -->
-				<t t-if="o and 'company_id' in o">
-					<t t-set="company" t-value="o.company_id"/>
-				</t>
-				<t t-if="not o or not 'company_id' in o">
-					<t t-set="company" t-value="res_company"/>
+        <template id="report_deliverieslabels_sale_document">
+            <t t-name="deliveries_labels.report_deliverieslabels_sale_document">
+                <!-- Multicompany -->
+                <t t-if="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id"/>
+                </t>
+                <t t-if="not o or not 'company_id' in o">
+                    <t t-set="company" t-value="res_company"/>
                 </t>
                 <div t-foreach="o.order_line" t-as="line">
                     <t t-set="product_uos_qty" t-value="line.product_uos_qty"/>
