@@ -118,7 +118,7 @@
         <template id="report_deliverieslabels_stock_pack_operation">
             <t t-call="report.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="deliveries_labels.report_deliverieslabels_stock_pack_operation_document" t-lang="o.partner_id.lang"/>
+                    <t t-call="deliveries_labels.report_deliverieslabels_stock_pack_operation_document" t-lang="o.owner_id.lang"/>
                 </t>
             </t>
         </template>
