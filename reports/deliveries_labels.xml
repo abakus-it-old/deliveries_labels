@@ -154,12 +154,14 @@
 		/>
 
 		<template id="report_deliverieslabels_stock_move_transient">
-            <t t-call="report.html_container">
-                <t t-foreach="doc_ids" t-as="doc_id">
-                    <t t-raw="translate_doc(doc_id, doc_model, 'picking_id.partner_id.lang', 'deliveries_labels.report_deliverieslabels_stock_move_transient_document')"/>
-                </t>
-            </t>
-        </template>
+			<t t-name="deliveries_labels.report_deliverieslabels_stock_move_transient">
+				<t t-call="report.html_container">
+					<t t-foreach="docs" t-as="o">
+						<t t-call="deliveries_labels.report_deliverieslabels_stock_move_transient_document" t-lang="o.picking_id.partner_id.lang"/>
+					</t>
+				</t>
+			</t>
+		</template>
 
 		<template id="report_deliverieslabels_stock_move_transient_document">
             <t t-name="deliveries_labels.report_deliverieslabels_stock_move_transient_document">
